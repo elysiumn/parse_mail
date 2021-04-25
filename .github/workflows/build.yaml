@@ -1,0 +1,22 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+
+jobs:
+  build-and-run-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        rust: [stable, nightly, beta]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        rust-version: ${{ matrix.rust }}
+    - name: Build
+      run: cargo build --tests --verbose
+    - name: Run tests
+      run: cargo test --verbose
